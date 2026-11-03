@@ -1,1 +1,81 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Agent Calendars</title><style>body{font-family:Arial;background:#111;color:#eee;padding:20px}h1{color:#7df;text-align:center}.cal{max-width:900px;margin:auto;display:grid;grid-template-columns:repeat(7,1fr);gap:4px}.day{background:#1c1c1c;border:1px solid #333;padding:10px;min-height:60px;border-radius:6px}.day b{color:#ff9}</style></head><body><h1>Agent Calendars</h1><div class="cal" id="cal"></div><script>const c=document.getElementById('cal');for(let i=1;i<=31;i++){const d=document.createElement('div');d.className='day';d.innerHTML='<b>'+i+'</b><br><small>agent task</small>';c.appendChild(d);}</script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Agent Calendars</title>
+<style>
+body{font-family:Arial;background:#0b1018;color:#e8edf2;margin:0;padding:20px}
+h1{color:#39ff14;text-align:center}
+.controls{display:flex;gap:10px;justify-content:center;margin-bottom:16px;flex-wrap:wrap}
+.controls button{padding:8px 14px;background:#131d29;color:#e8edf2;border:1px solid #00d2ff;border-radius:6px;cursor:pointer}
+.controls button.active{background:#00d2ff;color:#000}
+.agents{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;max-width:1400px;margin:auto}
+.agent{background:#131d29;border:1px solid #284052;border-radius:8px;padding:12px}
+.agent img{width:60px;height:60px;border-radius:50%;object-fit:cover;vertical-align:middle;margin-right:8px}
+.agent h3{display:inline-block;margin:0;color:#7bdeff}
+.cal{margin-top:10px;font-size:12px}
+.cal .row{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.cal .cell{background:#0a0c10;border:1px solid #1a2a3a;padding:4px;min-height:24px;border-radius:3px}
+.view{display:none}.view.active{display:block}
+</style>
+</head>
+<body>
+<h1>Agent Calendars</h1>
+<div class="controls">
+  <button data-scope="day" class="active" onclick="setScope('day')">Day</button>
+  <button data-scope="week" onclick="setScope('week')">Week</button>
+  <button data-scope="month" onclick="setScope('month')">Month</button>
+  <button data-scope="year" onclick="setScope('year')">Year</button>
+</div>
+<div class="agents" id="agents"></div>
+<script>
+const agents = [
+ {name:"Pete",img:null},
+ {name:"Big Brother aka Brian",img:"big-brother-aka-Brian.png"},
+ {name:"Carla",img:null},
+ {name:"Cody",img:"cody.png"},
+ {name:"Gem",img:"gem.png"},
+ {name:"Gordon",img:"gordon.png"},
+ {name:"Kev",img:"kev.png"},
+ {name:"Merlin",img:"merlin.png"},
+ {name:"Olivia",img:"olivia.png"},
+ {name:"Rachael",img:"rachael.png"},
+ {name:"Ross",img:"ross.png"},
+ {name:"Senna",img:"Senna.jpg"},
+ {name:"Stef",img:"stef.png"},
+ {name:"Terence",img:"terence.png"},
+ {name:"Trinity",img:"trinity.png"},
+ {name:"Abby",img:"abby.png"},
+ {name:"Hermex",img:null},
+ {name:"Ursula",img:"ursla.png"},
+ {name:"Chelsea",img:"chelsea.png"},
+ {name:"Michael",img:"michael.png"},
+ {name:"Chloe",img:"chloe.png"},
+ {name:"Vivienne",img:"vivienne.png"},
+ {name:"Alexandria",img:"alexandria.png"},
+ {name:"Devina",img:"devina.png"},
+ {name:"Grace",img:"grace.png"},
+ {name:"Madeline",img:"madeline.png"},
+ {name:"Max",img:"max.png"}
+];
+let scope="day";
+function setScope(s){scope=s;document.querySelectorAll('.controls button').forEach(b=>b.classList.toggle('active',b.dataset.scope===s));render();}
+function render(){
+  const root=document.getElementById('agents');root.innerHTML='';
+  agents.forEach(a=>{
+    const card=document.createElement('div');card.className='agent';
+    const img=a.img?`<img src="${a.img}" alt="${a.name}">`:'<div style="display:inline-block;width:60px;height:60px;border-radius:50%;background:#333;vertical-align:middle;margin-right:8px"></div>';
+    card.innerHTML=`${img}<h3>${a.name}</h3><div class="cal view active" data-scope="${scope}">${calendarHTML(scope)}</div>`;
+    root.appendChild(card);
+  });
+}
+function calendarHTML(s){
+  if(s==='day') return '<div class="row"><div class="cell">09:00 Daily schedule</div></div>';
+  if(s==='week') return '<div class="row">'+Array.from({length:7},(_,i)=>'<div class="cell">D'+(i+1)+'</div>').join('')+'</div>';
+  if(s==='month') return '<div class="row">'+Array.from({length:28},(_,i)=>'<div class="cell">'+(i+1)+'</div>').join('')+'</div>';
+  if(s==='year') return '<div class="row">'+Array.from({length:12},(_,i)=>'<div class="cell">M'+(i+1)+'</div>').join('')+'</div>';
+}
+render();
+</script>
+</body>
+</html>
