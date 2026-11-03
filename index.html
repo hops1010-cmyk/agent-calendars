@@ -65,7 +65,15 @@ function render(){
   agents.forEach(a=>{
     const card=document.createElement('div');card.className='agent';
     const img=a.img?`<img src="https://raw.githubusercontent.com/hops1010-cmyk/agent-calendars/master/thumbnails/${a.img.replace(/\.[^.]+$/,'.jpg')}" alt="${a.name}">`:'<div style="display:inline-block;width:60px;height:60px;border-radius:50%;background:#333;vertical-align:middle;margin-right:8px"></div>';
-    card.innerHTML=`${img}<h3>${a.name}</h3><div class="cal view active" data-scope="${scope}">${calendarHTML(scope)}</div>`;
+    card.innerHTML=`${img}<h3>${a.name}</h3><div class="cal view active" data-scope="${scope}">${calendarHTML(scope)}</div>
+    <div class="sched" style="margin-top:10px;background:#0a0c10;border:1px solid #1a2a3a;padding:8px;border-radius:4px">
+      <b style="color:#00d2ff">Schedule</b>
+      <ul style="margin:6px 0 0 18px;font-size:12px"><li>09:00 Daily standup</li><li>14:00 Task review</li></ul>
+    </div>
+    <div class="todo" style="margin-top:8px;background:#0a0c10;border:1px solid #1a2a3a;padding:8px;border-radius:4px">
+      <b style="color:#00d2ff">Todo</b>
+      <ul style="margin:6px 0 0 18px;font-size:12px"><li>Complete assigned tasks</li><li>Update status</li></ul>
+    </div>`;
     root.appendChild(card);
   });
 }
