@@ -60,6 +60,13 @@ const agents = [
  {name:"Max",img:"max.png"}
 ];
 let scope="day";
+const SCHED="09:00 Daily standup\n14:00 Task review\n16:00 Code review";
+const TODO="Complete assigned tasks\nUpdate status\nReview PRs\nWrite docs";
+16:00 Code review";
+const TODO="Complete assigned tasks
+Update status
+Review PRs
+Write docs";
 function setScope(s){scope=s;document.querySelectorAll('.controls button').forEach(b=>b.classList.toggle('active',b.dataset.scope===s));render();}
 function render(){
   const root=document.getElementById('agents');root.innerHTML='';
@@ -67,11 +74,11 @@ function render(){
     const card=document.createElement('div');card.className='agent';
     const img=a.img?`<img src="https://raw.githubusercontent.com/hops1010-cmyk/agent-calendars/master/thumbnails/${a.img.replace(/\.[^.]+$/,'.jpg')}" alt="${a.name}">`:'<div style="display:inline-block;width:60px;height:60px;border-radius:50%;background:#333;vertical-align:middle;margin-right:8px"></div>';
     card.innerHTML=`${img}<h3>${a.name}</h3><div class="cal view active" data-scope="${scope}">${calendarHTML(scope)}</div>
-    <div class="sched" style="margin-top:10px;background:#0a0c10;border:1px solid #1a2a3a;padding:8px;border-radius:4px">
+    <div class="sched" style="margin-top:10px;background:#0a0c10;border:1px solid #1a2a3a;padding:8px;border-radius:4px;cursor:pointer" onclick="openModal(SCHED,TODO)">
       <b style="color:#00d2ff">Schedule</b>
       <ul style="margin:6px 0 0 18px;font-size:12px"><li>09:00 Daily standup</li><li>14:00 Task review</li></ul>
     </div>
-    <div class="todo" style="margin-top:8px;background:#0a0c10;border:1px solid #1a2a3a;padding:8px;border-radius:4px">
+    <div class="todo" style="margin-top:8px;background:#0a0c10;border:1px solid #1a2a3a;padding:8px;border-radius:4px;cursor:pointer" onclick="openModal(SCHED,TODO)">
       <b style="color:#00d2ff">Todo</b>
       <ul style="margin:6px 0 0 18px;font-size:12px"><li>Complete assigned tasks</li><li>Update status</li></ul>
     </div>`;
@@ -86,5 +93,20 @@ function calendarHTML(s){
 }
 render();
 </script>
-</body>
+<div id="modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9999;align-items:center;justify-content:center">
+  <div style="background:#131d29;border:1px solid #00d2ff;border-radius:8px;padding:16px;max-width:600px;width:90%;max-height:80vh;overflow:auto">
+    <div style="display:flex;gap:8px;margin-bottom:12px">
+      <button onclick="showModalTab('sched')" style="padding:6px 12px;background:#1c1c1c;color:#eee;border:1px solid #333;border-radius:4px;cursor:pointer">Schedule</button>
+      <button onclick="showModalTab('todo')" style="padding:6px 12px;background:#1c1c1c;color:#eee;border:1px solid #333;border-radius:4px;cursor:pointer">Todo</button>
+      <button onclick="closeModal()" style="margin-left:auto;padding:6px 12px;background:#333;color:#eee;border:none;border-radius:4px;cursor:pointer">Close</button>
+    </div>
+    <div id="modal-sched" style="display:block;font-size:14px;line-height:1.6"></div>
+    <div id="modal-todo" style="display:none;font-size:14px;line-height:1.6"></div>
+  </div>
+</div>
+<script>
+function openModal(schedText,todoText){document.getElementById('modal-sched').textContent=schedText;document.getElementById('modal-todo').textContent=todoText;document.getElementById('modal').style.display='flex';showModalTab('sched');}
+function showModalTab(t){document.getElementById('modal-sched').style.display=t==='sched'?'block':'none';document.getElementById('modal-todo').style.display=t==='todo'?'block':'none';}
+function closeModal(){document.getElementById('modal').style.display='none';}
+</script>
 </html>
