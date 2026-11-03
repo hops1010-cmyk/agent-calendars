@@ -64,7 +64,7 @@ function render(){
   const root=document.getElementById('agents');root.innerHTML='';
   agents.forEach(a=>{
     const card=document.createElement('div');card.className='agent';
-    const img=a.img?`<img src="${a.img}" alt="${a.name}">`:'<div style="display:inline-block;width:60px;height:60px;border-radius:50%;background:#333;vertical-align:middle;margin-right:8px"></div>';
+    const img=a.img?`<img src="https://raw.githubusercontent.com/hops1010-cmyk/agent-calendars/master/${a.img}" alt="${a.name}">`:'<div style="display:inline-block;width:60px;height:60px;border-radius:50%;background:#333;vertical-align:middle;margin-right:8px"></div>';
     card.innerHTML=`${img}<h3>${a.name}</h3><div class="cal view active" data-scope="${scope}">${calendarHTML(scope)}</div>`;
     root.appendChild(card);
   });
